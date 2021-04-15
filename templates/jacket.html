@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+{% block css %}
+{% endblock css %}
+
+{% block body %}
+
+        <div class="gallery">
+            <div class="content row">
+                <div class="media col-md-4">
+                    <div class="">
+                        <a href="#"><img src="{{ url_for('static', filename='images/01.jpg') }}" alt="Jacket" title="Men's Denim Jacket" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-7" style="margin: auto 0;">
+                    <h3 id="mytext">Men's Denim Jacket</h3>
+                    <span class="badge badge-primary" id="mytext2" style="font-size: 25px;">Rs. 45 </span>
+                    <h4 id="mytext2"> <span class="badge badge-success">{{ stars[1] }}</span> Stars </h4>
+                    <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
+                </div>
+            </div>
+        </div>
+    {% endblock body %}
