@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Profile
+{% endblock title %}
+{% block css %}
+{% endblock css %}
+{% block body %}
+{% if session['logged_in'] %}  
+<div class="card-group">
+
+<div class="card" style="width: 18rem; margin: 10px">
+<div class="card-body">
+<h4 class="card-title"> User Profile : </h4>
+<ul class="card-text">
+    <li>Username is: {{ account['username'] }}</li>
+    <li>Email is: {{ account['email'] }}</li>
+    <li>Gender is: {{ account['gender'] }}</li>
+    <li>Location is: {{ account['locality'] }}</li>
+    <li>Age is: {{ account['age'] }}</li>
+</ul>
+</div>
+
+{% endif %}
+{% endblock body %}

@@ -112,6 +112,15 @@ def register():
 def jacket():
     return render_template('jacket.html')
 
+@app.route('/profile')
+def profile():
+    if 'loggedin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        return render_template('profile.html', account=account)
+    return redirect(url_for('home'))
+
 
 
 if __name__ == "__main__":
