@@ -737,26 +737,3 @@
 
 
 
-
-
-
-
-
-
-
-
-    {% for item in data %}
-    {% for account in allaccounts %}
-    {% if account['username'] == item[1] %}
-    <div class="card bg-light mycard">
-        <div class="card-body">
-            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                <span class="badge badge-success">{{ item[3] }}</span>
-            </h5>
-            <p class="card-text"> {{ item[2] }}</p>
-            <span class="badge badge-danger">{{ item[4] }}</span>
-        </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
