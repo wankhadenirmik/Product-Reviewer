@@ -57,6 +57,7 @@ import MySQLdb
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
+from datetime import datetime 
 
 
 app = Flask(__name__)
@@ -67,14 +68,26 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '@Nirmik123@'
+app.config['MYSQL_PASSWORD'] = 'Pass@1234'
 app.config['MYSQL_DB'] = 'user'
 
 from flask_wtf.csrf import CSRFProtect
+from flask_sqlalchemy import SQLAlchemy
 
 csrf = CSRFProtect(app)
 
 mysql = MySQL(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+db = SQLAlchemy(app)
+class Blogpost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50))
+    subtitle = db.Column(db.String(50))
+    author = db.Column(db.String(20))
+    date_posted = db.Column(db.DateTime)
+    content = db.Column(db.Text)
+
+
 
 @app.route("/")
 def home():
@@ -83,6 +96,60 @@ def home():
         session['logged_in']=True
         return render_template('home.html', username=session['username'])
     return render_template('home.html')
+
+
+@app.route("/blog")
+def index():
+    posts=Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    
+    return render_template('index.html',posts=posts) 
+
+
+@app.route("/about")
+def about():
+    
+    return render_template('about.html') 
+
+
+@app.route("/blog/post/<int:post_id>")
+def post(post_id):
+    post=Blogpost.query.filter_by(id=post_id).one()
+    
+    
+    return render_template('post.html',post=post) 
+
+
+
+
+
+@app.route('/blog/add')
+def add():
+    
+    return render_template('add.html',username=session['username']) 
+
+
+@app.route('/blog/addpost',methods=['POST'])
+def addpost():
+
+    
+    title = request.form['title']
+    subtitle=request.form['subtitle']
+    author= session['username']
+    content=request.form['content']
+
+    post=Blogpost(title=title,subtitle=subtitle,author=author,content=content,date_posted=datetime.now())
+    
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+    
+   # return '<h1>Title: {} Subtitle: {} Author: {} Content: {}</h1>'.format(title,subtitle,author,content)
+
+
+
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -168,8 +235,8 @@ agee = None
 def jacket():
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Nirmik123@",
-                  db="rating")
+                  passwd="Pass@1234",
+                  db="RATING")
     c = conn.cursor()
 
     c.execute("SELECT * FROM jacket ORDER BY timeadded DESC")
@@ -240,8 +307,8 @@ def postreview():
 
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Nirmik123@",
-                  db="rating")
+                  passwd="Pass@1234",
+                  db="RATING")
     c = conn.cursor()
 
     c.execute(
