@@ -158,6 +158,12 @@ def register():
 
 
 
+fil = False
+
+state = None
+gend = None
+agee = None
+
 @app.route("/jacket", methods=['GET', 'POST'])
 def jacket():
     conn = MySQLdb.connect(host= "localhost",
@@ -171,13 +177,47 @@ def jacket():
     data = c.fetchall()
 
     c.execute("SELECT * FROM product")
-
     stars = c.fetchone()
-    if 'loggedin' in session:
-        session['logged_in']=True
-        return render_template('jacket.html', data=data, stars = stars, username=session['username'])
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM accounts')
+    allaccounts = cursor.fetchall()
+
+    global state
+    global fil
+    global agee
+    global gend
+    loc = state
+    gen = gend
+    ag = agee
+    state = None
+    gend = None
+    agee = None
+    if fil == True:
+        if 'loggedin' in session:
+            session['logged_in']=True
+            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc = loc, gen = gen, ag = ag )
+        else:
+            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag)
     else:
-        return render_template('jacket.html', data=data, stars = stars)
+        if 'loggedin' in session:
+            session['logged_in']=True
+            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc =loc, gen = gen, ag = ag )
+        else:
+            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag)
+
+@app.route('/filter', methods=['GET', 'POST'])
+def filter():
+    global state
+    global fil
+    global agee
+    global gend
+    state = request.form['locality']
+    agee = request.form['age']
+    gend = request.form['gender']
+    fil = True
+    return redirect(url_for('jacket'))
+
+
 
 @app.route('/profile')
 def profile():
