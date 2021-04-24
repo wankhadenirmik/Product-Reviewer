@@ -1,0 +1,38 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Profile
+{% endblock title %}
+{% block css %}
+{% endblock css %}
+{% block body %}
+{% if session['logged_in'] %}  
+<div class="result" style="text-align:center;">
+
+  {% if price <= userprice %}
+  <h3 style="font-weight:bold;margin-top:200px;">Congrats!!!<br> The Price Of the Product DropDown To Your Requirement.
+  A mail From Price Tracker Coming On Your Way With The Product Link and Other Details..</h3>
+  {% elif price != req_price %}
+  <h4 style="margin-top:150px;font-weight:bolder;">We Will Let You Know When The Price of The Product Drop Down To You Requirment</h4>
+  <h5 style="font-weight:bold;">Below All the credentials Given By You</h5>
+     <h6 style="font-size:26px;text-align:left; height:30%; width:70%;margin-left:15%"> 
+      <br>
+      Product Name: {{user}}<br>
+      Current Price: {{price}}<br>
+      Your Email: {{useremail}}<br>
+      Required Price:{{userprice}}
+  </h6>
+  <br> <br> <br> <br> <br>
+  <h4 style="font-weight:bolder;">Thanks For Using Our Service</h4>
+  {% endif %}
+
+{% endif %}
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src=".js/materialize.js"></script>
+<script src="js/init.js"></script>
+<script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+</script>
+{% endblock body %}
+
+

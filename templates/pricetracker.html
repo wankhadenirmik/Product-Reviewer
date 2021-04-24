@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Profile
+{% endblock title %}
+{% block css %}
+{% endblock css %}
+{% block body %}
+<div class="container">
+    <div class="card">
+<p><h4 style="text-align: center;">Price Tracker for Amazon and Flipkart Products</h4></p>
+{% if session['logged_in'] %}  
+
+<form action="/price" method="post">
+
+    
+    <div class="form-group">
+      <label for="url">Url</label>
+      <input type="url" class="form-control" id="url" name="url"  aria-describedby="url" placeholder="Enter url of the product to be tracked">
+    </div>
+    <div class="form-group">
+      <label for="expected_price">Expected Price</label>
+      <input type="number" class="form-control" id="expected_price" name="expected_price" placeholder="Rs:">
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+  {% else %}
+  <p style="text-align: center;"> Please Sign up/ Login to use Price Tracker</p>
+  {% endif %}
+    </div>
+</div>
+  
+{% endblock body %}

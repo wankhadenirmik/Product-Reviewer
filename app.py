@@ -1,50 +1,50 @@
-# import numpy as np 
-# import pandas as pd 
+import numpy as np 
+import pandas as pd 
 
 
-# import os
-# import bz2
-# import re
-# from tqdm import tqdm
-# import tensorflow as tf
-# from sklearn.utils import shuffle
-# from matplotlib import pyplot as plt
-# from keras.preprocessing.text import Tokenizer
-# from keras.preprocessing.sequence import pad_sequences
-# from keras.models import Sequential
-# from keras.layers import Embedding,LSTM,Dropout,Dense
-# from keras.callbacks import EarlyStopping, ModelCheckpoint
-# from nltk.corpus import stopwords
-# from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import LabelBinarizer
-# from keras.models import load_model
-# from keras import backend as K
-
-
-
-# model = load_model('LSTMmodel.h5')
-# print("model loaded")
+import os
+import bz2
+import re
+from tqdm import tqdm
+import tensorflow as tf
+from sklearn.utils import shuffle
+from matplotlib import pyplot as plt
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+from keras.models import Sequential
+from keras.layers import Embedding,LSTM,Dropout,Dense
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from nltk.corpus import stopwords
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelBinarizer
+from keras.models import load_model
+from keras import backend as K
 
 
 
-# train_file = bz2.BZ2File('test.ft.txt.bz2')
+model = load_model('LSTMmodel.h5')
+print("model loaded")
 
 
 
-# train_file_lines = train_file.readlines()
-# train_file_lines = [x.decode('utf-8') for x in train_file_lines]
-# train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
-# train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
-# for i in range(len(train_sentences)):
-#     train_sentences[i] = re.sub('\d','0',train_sentences[i])
+train_file = bz2.BZ2File('test.ft.txt.bz2')
+
+
+
+train_file_lines = train_file.readlines()
+train_file_lines = [x.decode('utf-8') for x in train_file_lines]
+train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
+train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
+for i in range(len(train_sentences)):
+    train_sentences[i] = re.sub('\d','0',train_sentences[i])
     
                                                        
-# for i in range(len(train_sentences)):
-#     if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
-#         train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
-# X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
-# tokenizer = Tokenizer(num_words=10000)
-# tokenizer.fit_on_texts(X_train)
+for i in range(len(train_sentences)):
+    if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
+        train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
+X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
+tokenizer = Tokenizer(num_words=10000)
+tokenizer.fit_on_texts(X_train)
 
 
 
@@ -58,6 +58,14 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 from datetime import datetime 
+import requests
+from bs4 import BeautifulSoup
+import pprint
+import smtplib
+from email.message import EmailMessage
+import csv
+import schedule
+import time
 
 
 app = Flask(__name__)
@@ -68,7 +76,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Pass@1234'
+app.config['MYSQL_PASSWORD'] = '@Nirmik123@'
 app.config['MYSQL_DB'] = 'user'
 
 from flask_wtf.csrf import CSRFProtect
@@ -95,7 +103,7 @@ class Blogpost(db.Model):
 def home():
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
+                  passwd="@Nirmik123@",
                   db="user")
     c = conn.cursor()
     c.execute("SELECT * FROM products ORDER BY id DESC")
@@ -181,7 +189,7 @@ def addproductpost():
     print(name,description,price)
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
+                  passwd="@Nirmik123@",
                   db="user")
     c = conn.cursor()
 
@@ -283,8 +291,8 @@ agee = None
 def jacket():
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
-                  db="RATING")
+                  passwd="@Nirmik123@",
+                  db="rating")
     c = conn.cursor()
 
     c.execute("SELECT * FROM jacket ORDER BY timeadded DESC")
@@ -355,7 +363,7 @@ def postreview():
 
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
+                  passwd="@Nirmik123@",
                   db="RATING")
     c = conn.cursor()
 
@@ -374,6 +382,95 @@ def postreview():
     conn.commit()
 
     return redirect(url_for('jacket'))
+
+
+@app.route("/pricetracker")
+def pricetracker():  
+    return render_template('pricetracker.html')
+
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+
+x = 1
+y = 1
+
+@app.route('/price',methods=['POST','GET'])
+def price():
+    if request.method == 'POST' :
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        #print("hello2")
+        url = request.form['url']
+        req_price = int(request.form['expected_price'])
+        email_user = account['email']
+        global x
+        if "flipkart" in url.lower() :
+            print("Flipkart:\n")
+            res = requests.get(f'{url}')
+            soup = BeautifulSoup(res.text,'html.parser')
+            name = soup.select('._35KyD6')[0].getText()
+            price = soup.select('._3qQ9m1')[0].getText()
+            price = int(price[1:].replace(",",""))
+        elif "amazon" in url.lower():
+            print("Amazon:\n")
+            res = requests.get(url,headers=headers)
+            soup = BeautifulSoup(res.text,'html.parser')
+            name = soup.select("#title")[0].getText().strip()
+            try:
+                price = soup.select("#priceblock_dealprice")[0].getText().strip()
+            except:
+                price = soup.select("#priceblock_ourprice")[0].getText().strip()
+            price_num = price.replace("₹","")
+            price_num = price_num.replace(",","")
+            price = int(float(price_num))
+            print(price)
+            print(req_price)
+            if (price <= req_price) :
+                email = EmailMessage()
+                email['from'] = 'Price tracker'
+                email['to'] = email_user
+                email['subject'] = 'The price of product is drop down to your requirment... GO check out'
+
+                email.set_content(f'Product Name: {name}\nPrice:{price}\n Link: "{url}"')
+                with smtplib.SMTP(host='smtp.gmail.com', port=587) as smtp:
+                    smtp.ehlo()
+                    smtp.starttls()
+                    smtp.login('nswkale@gmail.com','@Vaishali123@')
+                    smtp.send_message(email)
+                x=x+1
+        else:
+            global y
+            print(y)
+            if (y<=1):
+                email = EmailMessage()
+                email['from'] = 'Price tracker'
+                email['to'] = email_user
+                email['subject'] = 'Price Tracker'
+
+                email.set_content(f'We Will Let You Know When The Price of the product dropped down to you requirement. \nProduct Name: {name}\nCurrent Price:{price}\n')
+                with smtplib.SMTP(host='smtp.gmail.com', port=587) as smtp:
+                    smtp.ehlo()
+                    smtp.starttls()
+                    smtp.login('nswkale@gmail.com','@Vaishali123@')
+                    smtp.send_message(email)
+                    y=y+1
+                    print("Email Send")
+            else:
+                print("Price Is Still Larger Than The Required Price")
+        return render_template("result.html",user=name,useremail=email_user,price=price,userprice=req_price,url=url)
+        
+        
+
+        schedule.every(3).seconds.do(price)
+        while x == 1:
+            schedule.run_pending()
+            time.sleep(1)
+        return render_template("pricetracker.html")
+    else:
+        return render_template("pricetracker.html")
+            
 
 
 if __name__ == "__main__":
