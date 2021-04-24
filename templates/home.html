@@ -2,7 +2,7 @@
 
 {% block title %}Home{% endblock title %}
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/album.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/album.css') }}" />
 
 
 {% endblock css %}
@@ -12,119 +12,45 @@
 
 <main role="main">
 
-    <section class="jumbotron text-center" style="background-image: url(../static/banner.jpg)">
-      <div class="container">
-        <h1 class="jumbotron-heading" style="color: antiquewhite; z-index: 3;">Product Reviewer System</h1>
-      </div>
-    </section>
+  <section class="jumbotron text-center" style="background-image: url(../static/banner.jpg)">
+    <div class="container">
+      <h1 class="jumbotron-heading" style="color: antiquewhite; z-index: 3;">Product Reviewer System</h1>
+    </div>
+  </section>
 
-    <div class="album py-5 bg-light">
-      <div class="container">
+  <div class="album py-5 bg-light">
+    <div class="container">
 
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image" title="This right here is a caption." /></a>
-              
-              <div class="card-body">
-                <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-lg btn-outline-body">Price</button>
-                    <button type="button" class="btn btn-lg btn-outline-body">Rs40</button>
+      <div class="row">
+        {% for item in data %}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-lg ">
+            <a href="{{ url_for('jacket') }}"><img class="card-img-top"
+                src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image"
+                title="This right here is a caption." /></a>
 
-                  </div>
+            <div class="card-body">
+              <h2 class="card-title"> {{ item[1]}}   </h2>
+              <h4 class="card-text">   {{ item[2]}}   </h4>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-grid gap-4 d-md-flex justify-content-md-end">
+                  <h3 class="card-text">Price : Rs </hr>
+                  <h3>{{item[3]}}</h3>
+
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image" title="This right here is a caption." /></a>
-              
-              <div class="card-body">
-                <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-lg btn-outline-body">Price</button>
-                    <button type="button" class="btn btn-lg btn-outline-body">Rs40</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image" title="This right here is a caption." /></a>
-              
-              <div class="card-body">
-                <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-lg btn-outline-body">Price</button>
-                    <button type="button" class="btn btn-lg btn-outline-body">Rs40</button>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image" title="This right here is a caption." /></a>
-              
-              <div class="card-body">
-                <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-lg btn-outline-body">Price</button>
-                    <button type="button" class="btn btn-lg btn-outline-body">Rs40</button>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image" title="This right here is a caption." /></a>
-              
-              <div class="card-body">
-                <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-lg btn-outline-body">Price</button>
-                    <button type="button" class="btn btn-lg btn-outline-body">Rs40</button>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/01.jpg') }}" alt="Image" title="This right here is a caption." /></a>
-              
-              <div class="card-body">
-                <p class="card-text">Black and grey checked slim fit casual shirt, has a button down collar, full button placket and a curved hem</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-lg btn-outline-body">Price</button>
-                    <button type="button" class="btn btn-lg btn-outline-body">Rs40</button>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-
         </div>
+        {% endfor %}
+
       </div>
     </div>
+  </div>
 
-  </main>
+  <div style="text-align :center;" class="container"> <button style="text-align :center;" class="btn btn-primary"><a
+        text-align="center" href="{{url_for('addproduct')}}">Add product</a></button></div>
+
+</main>
 
 {% endblock body %}

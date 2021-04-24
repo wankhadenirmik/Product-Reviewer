@@ -1,50 +1,50 @@
-import numpy as np 
-import pandas as pd 
+# import numpy as np 
+# import pandas as pd 
 
 
-import os
-import bz2
-import re
-from tqdm import tqdm
-import tensorflow as tf
-from sklearn.utils import shuffle
-from matplotlib import pyplot as plt
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from keras.models import Sequential
-from keras.layers import Embedding,LSTM,Dropout,Dense
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-from nltk.corpus import stopwords
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelBinarizer
-from keras.models import load_model
-from keras import backend as K
-
-
-
-model = load_model('LSTMmodel.h5')
-print("model loaded")
+# import os
+# import bz2
+# import re
+# from tqdm import tqdm
+# import tensorflow as tf
+# from sklearn.utils import shuffle
+# from matplotlib import pyplot as plt
+# from keras.preprocessing.text import Tokenizer
+# from keras.preprocessing.sequence import pad_sequences
+# from keras.models import Sequential
+# from keras.layers import Embedding,LSTM,Dropout,Dense
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
+# from nltk.corpus import stopwords
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import LabelBinarizer
+# from keras.models import load_model
+# from keras import backend as K
 
 
 
-train_file = bz2.BZ2File('test.ft.txt.bz2')
+# model = load_model('LSTMmodel.h5')
+# print("model loaded")
 
 
 
-train_file_lines = train_file.readlines()
-train_file_lines = [x.decode('utf-8') for x in train_file_lines]
-train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
-train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
-for i in range(len(train_sentences)):
-    train_sentences[i] = re.sub('\d','0',train_sentences[i])
+# train_file = bz2.BZ2File('test.ft.txt.bz2')
+
+
+
+# train_file_lines = train_file.readlines()
+# train_file_lines = [x.decode('utf-8') for x in train_file_lines]
+# train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
+# train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
+# for i in range(len(train_sentences)):
+#     train_sentences[i] = re.sub('\d','0',train_sentences[i])
     
                                                        
-for i in range(len(train_sentences)):
-    if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
-        train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
-X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
-tokenizer = Tokenizer(num_words=10000)
-tokenizer.fit_on_texts(X_train)
+# for i in range(len(train_sentences)):
+#     if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
+#         train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
+# X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
+# tokenizer = Tokenizer(num_words=10000)
+# tokenizer.fit_on_texts(X_train)
 
 
 
@@ -88,14 +88,28 @@ class Blogpost(db.Model):
     content = db.Column(db.Text)
 
 
+    
+
 
 @app.route("/")
 def home():
+    conn = MySQLdb.connect(host= "localhost",
+                  user="root",
+                  passwd="Pass@1234",
+                  db="user")
+    c = conn.cursor()
+    c.execute("SELECT * FROM products ORDER BY id DESC")
+
+    data = c.fetchall()
+    print(data)
+
+    
+    conn.commit()
     if 'loggedin' in session:
     
         session['logged_in']=True
-        return render_template('home.html', username=session['username'])
-    return render_template('home.html')
+        return render_template('home.html', username=session['username'],data=data)
+    return render_template('home.html',data=data)
 
 
 @app.route("/blog")
@@ -147,6 +161,40 @@ def addpost():
    # return '<h1>Title: {} Subtitle: {} Author: {} Content: {}</h1>'.format(title,subtitle,author,content)
 
 
+
+@app.route('/addproduct')
+def addproduct():
+    
+    return render_template('addproduct.html') 
+
+
+
+@app.route('/blog/addproductpost',methods=['POST'])
+def addproductpost():
+
+    
+    name = request.form['name']
+    description=request.form['description'] 
+    price=request.form['price']
+
+
+    print(name,description,price)
+    conn = MySQLdb.connect(host= "localhost",
+                  user="root",
+                  passwd="Pass@1234",
+                  db="user")
+    c = conn.cursor()
+
+    c.execute('INSERT INTO products VALUES (NULL, %s, %s, %s)',(name, description, price))
+    c.execute("SELECT * FROM products ORDER BY id DESC")
+
+    data = c.fetchall()
+    
+    
+    conn.commit()
+
+   
+    return redirect(url_for('home',data=data))
 
 
 
