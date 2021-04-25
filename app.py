@@ -189,8 +189,9 @@ def addpost():
 
 @app.route('/addproduct')
 def addproduct():
+    uname=session['username']
     
-    return render_template('addproduct.html') 
+    return render_template('addproduct.html',uname=uname) 
 
 
 
