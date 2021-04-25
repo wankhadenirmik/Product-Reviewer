@@ -46,7 +46,7 @@
 # tokenizer = Tokenizer(num_words=10000)
 # tokenizer.fit_on_texts(X_train)
 
-UPLOAD_FOLDER = '/home/dewa/Desktop/product_reviewer/static/images'
+# UPLOAD_FOLDER = '/home/dewa/Desktop/product_reviewer/static/images'
 
 
 def rate(p):
@@ -262,7 +262,7 @@ def addproductpost():
                   passwd="Pass@1234",
                   db="RATING")
     c = conn.cursor()
-    default_rating=2.5
+   
 
     c.execute('INSERT INTO product VALUES (NULL, 2.5)')
     conn.commit()
@@ -355,18 +355,21 @@ state = None
 gend = None
 agee = None
 
-@app.route("/jacket", methods=['GET', 'POST'])
-def jacket():
-    print('Hellow')
+@app.route("/jacket/<int:product_id>", methods=['GET', 'POST'])
+def jacket(product_id):
+    print(product_id)
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
                   passwd="Pass@1234",
                   db="RATING")
     c = conn.cursor()
+   
+    c.execute("SELECT * FROM jacket  where product_id=1 ORDER BY timeadded DESC ")
 
-    c.execute("SELECT * FROM jacket ORDER BY timeadded DESC")
+    #c.execute("SELECT * FROM jacket  where product_id='%s' ORDER BY timeadded DESC ",(product_id))
 
     data = c.fetchall()
+    print(data)
 
     c.execute("SELECT * FROM product")
     stars = c.fetchone()
@@ -432,13 +435,14 @@ def postreview():
 
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Pass@1234",
+                  passwd="Pass@1234",
                   db="RATING")
     c = conn.cursor()
+    product_id=1
 
     c.execute(
-      """INSERT INTO jacket (uname, review, rate)
-      VALUES (%s, %s, %s)""",(uname, review , value ))
+      """INSERT INTO jacket (uname, review, rate, product_id)
+      VALUES (%s, %s, %s,%s)""",(uname, review , value ,product_id ))
     
     conn.commit()
 
@@ -450,7 +454,7 @@ def postreview():
 
     conn.commit()
 
-    return redirect(url_for('jacket'))
+    return redirect(url_for('jacket',product_id=1))
 
 
 @app.route("/pricetracker")

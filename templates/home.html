@@ -33,7 +33,7 @@
         {% for item in arr %}
         <div class="col-md-4">
           <div class="card mb-4 shadow-lg ">
-            <a href="{{ url_for('jacket') }}"><img class="card-img-top"
+            <a href="{{ url_for('jacket',product_id=item.id)}}"><img class="card-img-top"
                 src="static/images/{{item.filename}}" alt="Image"
                 title="This right here is a caption." /></a>
 
