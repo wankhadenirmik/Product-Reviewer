@@ -124,8 +124,7 @@ def home():
     for item in data:
         d_named = namedtuple('Struct', item.keys())(*item.values())
         arr.append(d_named)
-    print(arr[0])
-    # print(data[0].get('filename'))
+    
    
    
     
@@ -239,8 +238,7 @@ def addproductpost():
     c = conn.cursor()
 
     c.execute('INSERT INTO products VALUES (NULL, %s, %s, %s, %s)',(name, description,filename,price))
-    c.execute("SELECT * FROM products ORDER BY id DESC")
-
+   
    
     
     
@@ -256,6 +254,21 @@ def addproductpost():
     for item in data:
         d_named = namedtuple('Struct', item.keys())(*item.values())
         arr.append(d_named)
+
+
+
+    conn = MySQLdb.connect(host= "localhost",
+                  user="root",
+                  passwd="Pass@1234",
+                  db="RATING")
+    c = conn.cursor()
+    default_rating=2.5
+
+    c.execute('INSERT INTO product VALUES (NULL, 2.5)')
+    conn.commit()
+
+  
+    
 
     return redirect(url_for('home',arr=arr))
 
@@ -344,9 +357,10 @@ agee = None
 
 @app.route("/jacket", methods=['GET', 'POST'])
 def jacket():
+    print('Hellow')
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Pass@1234",
+                  passwd="Pass@1234",
                   db="RATING")
     c = conn.cursor()
 
