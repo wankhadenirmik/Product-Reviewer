@@ -26,6 +26,9 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
+  
+  `filename` varchar(50) NOT NULL,
+  
   `price` varchar(100) NOT NULL,
   
   PRIMARY KEY (`id`)

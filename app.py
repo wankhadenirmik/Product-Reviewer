@@ -1,56 +1,57 @@
-import numpy as np 
-import pandas as pd 
+# import numpy as np 
+# import pandas as pd 
 
 
-import os
-import bz2
-import re
-from tqdm import tqdm
-import tensorflow as tf
-from sklearn.utils import shuffle
-from matplotlib import pyplot as plt
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from keras.models import Sequential
-from keras.layers import Embedding,LSTM,Dropout,Dense
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-from nltk.corpus import stopwords
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelBinarizer
-from keras.models import load_model
-from keras import backend as K
-
-
-
-model = load_model('LSTMmodel.h5')
-print("model loaded")
+# import os
+# import bz2
+# import re
+# from tqdm import tqdm
+# import tensorflow as tf
+# from sklearn.utils import shuffle
+# from matplotlib import pyplot as plt
+# from keras.preprocessing.text import Tokenizer
+# from keras.preprocessing.sequence import pad_sequences
+# from keras.models import Sequential
+# from keras.layers import Embedding,LSTM,Dropout,Dense
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
+# from nltk.corpus import stopwords
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import LabelBinarizer
+# from keras.models import load_model
+# from keras import backend as K
 
 
 
-train_file = bz2.BZ2File('test.ft.txt.bz2')
+# model = load_model('LSTMmodel.h5')
+# print("model loaded")
 
 
 
-train_file_lines = train_file.readlines()
-train_file_lines = [x.decode('utf-8') for x in train_file_lines]
-train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
-train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
-for i in range(len(train_sentences)):
-    train_sentences[i] = re.sub('\d','0',train_sentences[i])
+# train_file = bz2.BZ2File('test.ft.txt.bz2')
+
+
+
+# train_file_lines = train_file.readlines()
+# train_file_lines = [x.decode('utf-8') for x in train_file_lines]
+# train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
+# train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
+# for i in range(len(train_sentences)):
+#     train_sentences[i] = re.sub('\d','0',train_sentences[i])
     
                                                        
-for i in range(len(train_sentences)):
-    if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
-        train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
-X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
-tokenizer = Tokenizer(num_words=10000)
-tokenizer.fit_on_texts(X_train)
+# for i in range(len(train_sentences)):
+#     if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
+#         train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
+# X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
+# tokenizer = Tokenizer(num_words=10000)
+# tokenizer.fit_on_texts(X_train)
 
+UPLOAD_FOLDER = '/home/dewa/Desktop/product_reviewer/static/images'
 
 
 def rate(p):
    return (p*5)
-
+import json
 import sys
 from flask import Flask, flash, render_template, url_for,json, request, jsonify, redirect,session,logging
 import MySQLdb
@@ -66,6 +67,13 @@ from email.message import EmailMessage
 import csv
 import schedule
 import time
+import os
+#from app import app
+#import urllib.request
+from werkzeug.utils import secure_filename
+from bunch import bunchify
+from collections import namedtuple
+
 
 
 app = Flask(__name__)
@@ -76,7 +84,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '@Nirmik123@'
+app.config['MYSQL_PASSWORD'] = 'Pass@1234'
 app.config['MYSQL_DB'] = 'user'
 
 from flask_wtf.csrf import CSRFProtect
@@ -95,29 +103,38 @@ class Blogpost(db.Model):
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
 
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS   
 
-    
 
-
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 @app.route("/")
 def home():
-    conn = MySQLdb.connect(host= "localhost",
-                  user="root",
-                  passwd="@Nirmik123@",
-                  db="user")
-    c = conn.cursor()
-    c.execute("SELECT * FROM products ORDER BY id DESC")
+    # conn = MySQLdb.connect(host= "localhost",
+    #               user="root",
+    #               passwd="Pass@1234",
+    #               db="user")
+    # c = conn.cursor()
 
-    data = c.fetchall()
-    print(data)
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM products ORDER BY id DESC")
 
+    data = cursor.fetchall()
+    arr=[]
+    for item in data:
+        d_named = namedtuple('Struct', item.keys())(*item.values())
+        arr.append(d_named)
+    print(arr[0])
+    # print(data[0].get('filename'))
+   
+   
     
-    conn.commit()
+    #conn.commit()
     if 'loggedin' in session:
     
         session['logged_in']=True
-        return render_template('home.html', username=session['username'],data=data)
-    return render_template('home.html',data=data)
+        return render_template('home.html', username=session['username'], arr=arr)
+    return render_template('home.html', arr=arr)
 
 
 @app.route("/blog")
@@ -177,32 +194,69 @@ def addproduct():
 
 
 
-@app.route('/blog/addproductpost',methods=['POST'])
+@app.route('/addproductpost',methods=['POST'])
 def addproductpost():
-
+    if request.method == 'POST':
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            #uploaded_file.save(uploaded_file.filename)
+            uploaded_file.save(os.path.join('static/images', uploaded_file.filename))
     
+
+    # filename=""
     name = request.form['name']
-    description=request.form['description'] 
+    filename=request.files['file'].filename
+    #file=request.files['file']
+   # filedata=file.read()
+   # filename=secure_filename(file.filename)
     price=request.form['price']
+    description=request.form['description']
+    # if request.method == 'POST':
+    #     # check if the post request has the file part
+    #     if 'file' not in request.files:
+    #         flash('No file part')
+        
+    #     file = request.files['file']
+    #     # if user does not select file, browser also
+    #     # submit an empty part without filename
+    #     if file.filename == '':
+    #         flash('No selected file')
+    
+    #     if file and allowed_file(file.filename):
+    #         filename = secure_filename(file.filename)
+    #         print(os.path)
+    #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+    
 
 
-    print(name,description,price)
+   
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Nirmik123@",
+                  passwd="Pass@1234",
                   db="user")
     c = conn.cursor()
 
-    c.execute('INSERT INTO products VALUES (NULL, %s, %s, %s)',(name, description, price))
+    c.execute('INSERT INTO products VALUES (NULL, %s, %s, %s, %s)',(name, description,filename,price))
     c.execute("SELECT * FROM products ORDER BY id DESC")
 
-    data = c.fetchall()
+   
     
     
     conn.commit()
 
    
-    return redirect(url_for('home',data=data))
+  
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM products ORDER BY id DESC")
+
+    data = cursor.fetchall()
+    arr=[]
+    for item in data:
+        d_named = namedtuple('Struct', item.keys())(*item.values())
+        arr.append(d_named)
+
+    return redirect(url_for('home',arr=arr))
 
 
 
@@ -291,8 +345,8 @@ agee = None
 def jacket():
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Nirmik123@",
-                  db="rating")
+                  passwd="@Pass@1234",
+                  db="RATING")
     c = conn.cursor()
 
     c.execute("SELECT * FROM jacket ORDER BY timeadded DESC")
@@ -363,7 +417,7 @@ def postreview():
 
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="@Nirmik123@",
+                  passwd="@Pass@1234",
                   db="RATING")
     c = conn.cursor()
 
