@@ -364,18 +364,23 @@ def jacket(product_id):
                   db="RATING")
     c = conn.cursor()
    
-    c.execute("SELECT * FROM jacket  where product_id=1 ORDER BY timeadded DESC ")
+    # c.execute("SELECT * FROM jacket  where product_id=1 ORDER BY timeadded DESC ")
 
-    #c.execute("SELECT * FROM jacket  where product_id='%s' ORDER BY timeadded DESC ",(product_id))
+    c.execute("SELECT * FROM jacket  where product_id=%s ORDER BY timeadded DESC ",str(product_id))
 
     data = c.fetchall()
     print(data)
 
-    c.execute("SELECT * FROM product")
+    c.execute("SELECT * FROM product where id=%s",str(product_id))
     stars = c.fetchone()
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM accounts')
     allaccounts = cursor.fetchall()
+    cursor.execute('SELECT filename from products where id=%s',str(product_id))
+    filename= cursor.fetchone()
+    imagename = filename.get('filename')
+    
+    
 
     global state
     global fil
@@ -390,15 +395,15 @@ def jacket(product_id):
     if fil == True:
         if 'loggedin' in session:
             session['logged_in']=True
-            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc = loc, gen = gen, ag = ag )
+            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc = loc, gen = gen, ag = ag ,imagename=imagename,product_id=product_id)
         else:
-            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag)
+            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
     else:
         if 'loggedin' in session:
             session['logged_in']=True
-            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc =loc, gen = gen, ag = ag )
+            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc =loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
         else:
-            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag)
+            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
 
 @app.route('/filter', methods=['GET', 'POST'])
 def filter():
