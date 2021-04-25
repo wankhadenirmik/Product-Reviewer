@@ -379,6 +379,8 @@ def jacket(product_id):
     cursor.execute('SELECT filename from products where id=%s',str(product_id))
     filename= cursor.fetchone()
     imagename = filename.get('filename')
+    imagename="images/"+imagename
+  #  print(url_for('static',filename=url))
     
     
 
