@@ -35,15 +35,15 @@
           <div class="card mb-4 shadow-lg ">
             <a href="{{ url_for('jacket',product_id=item.id)}}"><img class="card-img-top"
                 src="static/images/{{item.filename}}" alt="Image"
-                title="This right here is a caption." /></a>
+                title="This right here is a caption." width="400" height="400" /></a>
 
             <div class="card-body">
               <h2 class="card-title"> {{ item[1]}}   </h2>
-              <h4 class="card-text">   {{ item[2]}}   </h4>
+              <h6 class="card-text">   {{ item[2]}}   </h6>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="d-grid gap-4 d-md-flex justify-content-md-end">
-                  <h3 class="card-text">Price : Rs </hr>
-                  <h3>{{item[4]}}</h3>
+                  <h4 class="card-text">Price : Rs </h4></hr>
+                  <h4>{{item[4]}}</h4>
 
                 </div>
               </div>
@@ -55,10 +55,13 @@
       </div>
     </div>
   </div>
-
+  {% if session['logged_in'] %} 
   <div style="text-align :center;" class="container"> <button style="text-align :center;" class="btn btn-primary"><a
         text-align="center" href="{{url_for('addproduct')}}">Add product</a></button></div>
+{% else %}
 
+<div style="text-align :center;" class="container"></div><p style="text-align: center;"> Please Signup/Login to add the product</p></div>
+{% endif %}
 </main>
 
 {% endblock body %}

@@ -84,7 +84,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Pass@1234'
+app.config['MYSQL_PASSWORD'] = '@Nirmik123@'
 app.config['MYSQL_DB'] = 'user'
 
 from flask_wtf.csrf import CSRFProtect
@@ -112,7 +112,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 def home():
     # conn = MySQLdb.connect(host= "localhost",
     #               user="root",
-    #               passwd="Pass@1234",
+    #               passwd="@Nirmik123@",
     #               db="user")
     # c = conn.cursor()
 
@@ -233,11 +233,12 @@ def addproductpost():
    
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
-                  db="user")
+                  passwd="@Nirmik123@",
+                  db="user"
+                  )
     c = conn.cursor()
 
-    c.execute('INSERT INTO products VALUES (NULL, %s, %s, %s, %s)',(name, description,filename,price))
+    c.execute('INSERT INTO products VALUES (NULL, %s, %s, %s, %s)', (name.encode('utf-8'), description.encode('utf-8'), filename.encode('utf-8'), price.encode('utf-8')))
    
    
     
@@ -259,8 +260,8 @@ def addproductpost():
 
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
-                  db="RATING")
+                  passwd="@Nirmik123@",
+                  db="rating")
     c = conn.cursor()
    
 
@@ -360,8 +361,8 @@ def jacket(product_id):
     print(product_id)
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
-                  db="RATING")
+                  passwd="@Nirmik123@",
+                  db="rating")
     c = conn.cursor()
    
     # c.execute("SELECT * FROM jacket  where product_id=1 ORDER BY timeadded DESC ")
@@ -369,17 +370,28 @@ def jacket(product_id):
     c.execute("SELECT * FROM jacket  where product_id=%s ORDER BY timeadded DESC ",str(product_id))
 
     data = c.fetchall()
-    print(data)
 
     c.execute("SELECT * FROM product where id=%s",str(product_id))
     stars = c.fetchone()
+   
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM accounts')
     allaccounts = cursor.fetchall()
     cursor.execute('SELECT filename from products where id=%s',str(product_id))
     filename= cursor.fetchone()
     imagename = filename.get('filename')
+    cursor.execute('SELECT name from products where id=%s',str(product_id))
+    name = cursor.fetchone()
+    name = name.get('name')
+    cursor.execute('SELECT price from products where id=%s',str(product_id))
+    price= cursor.fetchone()
+    price = price.get('price')
     imagename="images/"+imagename
+
+
+    
+
+    
     global state
     global fil
     global agee
@@ -395,15 +407,15 @@ def jacket(product_id):
     if fil == True:
         if 'loggedin' in session:
             session['logged_in']=True
-            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc = loc, gen = gen, ag = ag ,imagename=imagename,product_id=product_id)
+            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc = loc, gen = gen, ag = ag ,imagename=imagename,product_id=product_id, name=name, price=price)
         else:
-            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
+            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id, name=name, price=price)
     else:
         if 'loggedin' in session:
             session['logged_in']=True
-            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc =loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
+            return render_template('jacket.html', data=data, stars = stars, username=session['username'], allaccounts = allaccounts, loc =loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id, name=name, price=price)
         else:
-            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
+            return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id, name=name, price=price)
 
 @app.route('/filter/<int:product_id>', methods=['GET', 'POST'])
 def filter(product_id):
@@ -440,8 +452,8 @@ def postreview(product_id):
 
     conn = MySQLdb.connect(host= "localhost",
                   user="root",
-                  passwd="Pass@1234",
-                  db="RATING")
+                  passwd="@Nirmik123@",
+                  db="rating")
     c = conn.cursor()
    
     
@@ -456,7 +468,7 @@ def postreview(product_id):
 
     avg = c.fetchone()
 
-    c.execute("""UPDATE product SET rating = %s WHERE id = %s""",(avg,1))
+    c.execute("""UPDATE product SET rating = %s WHERE id = %s""",(avg,str(product_id)))
 
     conn.commit()
 
@@ -549,7 +561,11 @@ def price():
         return render_template("pricetracker.html")
     else:
         return render_template("pricetracker.html")
-            
+
+
+@app.route('/help')
+def help():
+    return render_template("help.html")
 
 
 if __name__ == "__main__":

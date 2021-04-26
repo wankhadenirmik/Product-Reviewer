@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
-{% block title %}Profile
+{% block title %}PriceTracker
 {% endblock title %}
 {% block css %}
 {% endblock css %}
 {% block body %}
-<div class="container">
-    <div class="card">
-<p><h4 style="text-align: center;">Price Tracker for Amazon and Flipkart Products</h4></p>
-{% if session['logged_in'] %}  
 
+<header class="masthead" style="background-image: url('{{url_for('static',filename='images/post-bg.jpg')}}' )">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row"> 
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>Price Tracker</h1>
+          <span class="subheading">Track prices of your desired Amazon and Flipkart Products</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% if session['logged_in'] %}  
+<div class="container">
 <form action="/price" method="post">
 
     
@@ -25,8 +36,10 @@
   </form>
   {% else %}
   <p style="text-align: center;"> Please Sign up/ Login to use Price Tracker</p>
-  {% endif %}
-    </div>
+  
 </div>
+{% endif %}
+    </div>
+
   
 {% endblock body %}

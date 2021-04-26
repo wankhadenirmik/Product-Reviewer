@@ -43,6 +43,9 @@
       <li class="navbar-nav nav-item active">
         <a class="nav-link" href="/pricetracker"> Price Tracker <span class="sr-only">(current)</span></a>
       </li>
+      <li class="navbar-nav nav-item active">
+        <a class="nav-link" href="/help"> Help <span class="sr-only">(current)</span></a>
+      </li>
     
     
       
@@ -222,15 +225,21 @@
 
       </div>
     </div>
+    
   </div>
+
+  
+<!-- Footer -->
 
 
   {% block body %}
   {% endblock body %}
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
-
+  <br>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul>
+    <li style="text-align: center; color: antiquewhite;">Website Designed by: Sarah, Dewashish, Nirmik</li>
+  </ul>
+</nav>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.poptrox.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>

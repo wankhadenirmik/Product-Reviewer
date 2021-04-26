@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}HELP
+{% endblock title %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+{% endblock css %}
+
+{% block body %}
+
+<div class="jumbotron">
+    <h1 class="display-4">Help</h1>
+    <p class="lead">This is a Product Reviewer Communtiy Website</p>
+    <hr class="my-4">
+    <p>You can write reviews and also view reviews written by others. </p>
+    <p>We have provided a feature for demographic analysis where you can fiter out data on the basis of Age, gender and location.</p>
+
+
+</div>
+
+
+<div class="jumbotron">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+    
+</div>
+<p>1. View the reviews and Rating of Different Product</p>  
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+ 
+</div>
+<p>2. To write a review please Sign Up/ Login </p> 
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+
+</div>
+<p>3. Then write a review and view other review and ratings</p>  
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+   
+</div>
+<p>4. For Blog write a Blog and view other Blog through links</p>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    
+</div>
+<p>5. For Price Tracker: Enter the URL of the desired product of Amazon/Flipkart, a mail will come as soon as the product price is dropped</p>   
+</div>
+{% endblock body %}
