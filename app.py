@@ -1,52 +1,52 @@
-# import numpy as np 
-# import pandas as pd 
+import numpy as np 
+import pandas as pd 
 
 
-# import os
-# import bz2
-# import re
-# from tqdm import tqdm
-# import tensorflow as tf
-# from sklearn.utils import shuffle
-# from matplotlib import pyplot as plt
-# from keras.preprocessing.text import Tokenizer
-# from keras.preprocessing.sequence import pad_sequences
-# from keras.models import Sequential
-# from keras.layers import Embedding,LSTM,Dropout,Dense
-# from keras.callbacks import EarlyStopping, ModelCheckpoint
-# from nltk.corpus import stopwords
-# from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import LabelBinarizer
-# from keras.models import load_model
-# from keras import backend as K
-
-
-
-# model = load_model('LSTMmodel.h5')
-# print("model loaded")
+import os
+import bz2
+import re
+from tqdm import tqdm
+import tensorflow as tf
+from sklearn.utils import shuffle
+from matplotlib import pyplot as plt
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+from keras.models import Sequential
+from keras.layers import Embedding,LSTM,Dropout,Dense
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from nltk.corpus import stopwords
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelBinarizer
+from keras.models import load_model
+from keras import backend as K
 
 
 
-# train_file = bz2.BZ2File('test.ft.txt.bz2')
+model = load_model('LSTMmodel.h5')
+print("model loaded")
 
 
 
-# train_file_lines = train_file.readlines()
-# train_file_lines = [x.decode('utf-8') for x in train_file_lines]
-# train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
-# train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
-# for i in range(len(train_sentences)):
-#     train_sentences[i] = re.sub('\d','0',train_sentences[i])
+train_file = bz2.BZ2File('test.ft.txt.bz2')
+
+
+
+train_file_lines = train_file.readlines()
+train_file_lines = [x.decode('utf-8') for x in train_file_lines]
+train_labels = [0 if x.split(' ')[0] == '__label__1' else 1 for x in train_file_lines]
+train_sentences = [x.split(' ', 1)[1][:-1].lower() for x in train_file_lines]
+for i in range(len(train_sentences)):
+    train_sentences[i] = re.sub('\d','0',train_sentences[i])
     
                                                        
-# for i in range(len(train_sentences)):
-#     if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
-#         train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
-# X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
-# tokenizer = Tokenizer(num_words=10000)
-# tokenizer.fit_on_texts(X_train)
+for i in range(len(train_sentences)):
+    if 'www.' in train_sentences[i] or 'http:' in train_sentences[i] or 'https:' in train_sentences[i] or '.com' in train_sentences[i]:
+        train_sentences[i] = re.sub(r"([^ ]+(?<=\.[a-z]{3}))", "<url>", train_sentences[i])
+X_train,X_test,y_train,y_test=train_test_split(train_sentences,train_labels,train_size=0.80,test_size=0.20,random_state=42)
+tokenizer = Tokenizer(num_words=10000)
+tokenizer.fit_on_texts(X_train)
 
-# UPLOAD_FOLDER = '/home/dewa/Desktop/product_reviewer/static/images'
+
 
 
 def rate(p):
@@ -380,10 +380,6 @@ def jacket(product_id):
     filename= cursor.fetchone()
     imagename = filename.get('filename')
     imagename="images/"+imagename
-  #  print(url_for('static',filename=url))
-    
-    
-
     global state
     global fil
     global agee
@@ -393,6 +389,8 @@ def jacket(product_id):
     ag = agee
     state = None
     gend = None
+  
+     
     agee = None
     if fil == True:
         if 'loggedin' in session:
@@ -407,8 +405,8 @@ def jacket(product_id):
         else:
             return render_template('jacket.html', data=data, stars = stars, allaccounts = allaccounts, loc = loc, gen = gen, ag = ag,imagename=imagename,product_id=product_id)
 
-@app.route('/filter', methods=['GET', 'POST'])
-def filter():
+@app.route('/filter/<int:product_id>', methods=['GET', 'POST'])
+def filter(product_id):
     global state
     global fil
     global agee
@@ -417,7 +415,7 @@ def filter():
     agee = request.form['age']
     gend = request.form['gender']
     fil = True
-    return redirect(url_for('jacket'))
+    return redirect(url_for('jacket',product_id=product_id))
 
 
 
@@ -430,8 +428,8 @@ def profile():
         return render_template('profile.html', account=account)
     return redirect(url_for('home'))
 
-@app.route("/postreview", methods=['POST'])
-def postreview():
+@app.route("/postreview/<int:product_id>", methods=['GET','POST'])
+def postreview(product_id):
     uname=session['username']
     review = request.form['reviewbox']
     
@@ -445,7 +443,8 @@ def postreview():
                   passwd="Pass@1234",
                   db="RATING")
     c = conn.cursor()
-    product_id=1
+   
+    
 
     c.execute(
       """INSERT INTO jacket (uname, review, rate, product_id)
@@ -461,7 +460,7 @@ def postreview():
 
     conn.commit()
 
-    return redirect(url_for('jacket',product_id=1))
+    return redirect(url_for('jacket',product_id=product_id))
 
 
 @app.route("/pricetracker")

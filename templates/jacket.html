@@ -2,741 +2,742 @@
 
 {% block title %}Jacket{% endblock title %}
 {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
 {% endblock css %}
 
 {% block body %}
- <section id="main">
-        <div class="gallery">
-            <div class="content row">
-                <div class="media col-md-4">
-                    <div class="">
-                        
+<section id="main">
+    <div class="gallery">
+        <div class="content row">
+            <div class="media col-md-4">
+                <div class="">
 
-                        <img src="{{ url_for('static', filename=imagename) }}" alt="Jacket" title="Men's Denim Jacket" />
-                    </div>
 
+                    <img src="{{ url_for('static', filename=imagename) }}" alt="Jacket" title="Men's Denim Jacket" />
                 </div>
 
-                <div class="col-md-7" style="margin: auto 0;">
-                    <h3 id="mytext">Men's Denim Jacket</h3>
-                    <span class="badge badge-primary" id="mytext2" style="font-size: 25px;">Rs. 4,500 </span>
-                    <h4 id="mytext2">Stars <span class="badge badge-success">{{ stars[1] }}</span> </h4>
-                </div>
+            </div>
+
+            <div class="col-md-7" style="margin: auto 0;">
+                <h3 id="mytext">Men's Denim Jacket</h3>
+                <span class="badge badge-primary" id="mytext2" style="font-size: 25px;">Rs. 4,500 </span>
+                <h4 id="mytext2">Stars <span class="badge badge-success">{{ stars[1] }}</span> </h4>
             </div>
         </div>
-
-        <div class="container">
-            <hr>
-            <div class="row">
-                <div class="col-md-6" style="border-right: 2px solid #cfcfcf">
-                    {% if session['logged_in'] %} 
-                    <form action="/postreview" method="post">
-                        <div class="form-group">
-                            <label for="uname">
-                                <h5>Hi {{ username }} !! </h5>
-                            </label>
-                            <hr>
-                            <label for="reviewbox">
-                                <h5> Write a Review</h5>
-                            </label>
-                            <textarea type="text" class="form-control" id="reviewbox" aria-describedby="reviewlHelp"
-                                placeholder="Write a Review" style="min-height:100px" name="reviewbox" required></textarea>
-                            <small id="reviewHelp" class="form-text text-muted">Tell us how you feel about the product.</small>
-                        </div>
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                        <button type="submit" class="btn btn-primary"> Submit </button>     
-                    </form>
-                    {% else %}
-                    <p>Please log in to write a review</p>
-                    {% endif %}
-                    <hr>
-                    <p>The product rating is generated based on the review you provide</p>
-                </div>
-
-                <div class="col-md-6" id="review">  
-                    <div class="col-md-3" id="review">
-                <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#filter">
-                    Filter
-                  </button>
-
-                </div>
-
-                       
-  <!-- filter-Modal -->
-  <div class="modal fade" id="filter" tabindex="-1" role="dialog" aria-labelledby="filterLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="filterLabel">Where are u from?</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="/filter" method="post">
-            <div class="form-group">
-              <label for="locality">Which location</label>
-              <select name="locality" id="locality" class="form-control" Required>
-                <option value="All">None</option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Chandigarh">Chandigarh</option>
-                <option value="Chhattisgarh">Chhattisgarh</option>
-                <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-                <option value="Daman and Diu">Daman and Diu</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Lakshadweep">Lakshadweep</option>
-                <option value="Puducherry">Puducherry</option>
-                <option value="Goa">Goa</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Himachal Pradesh">Himachal Pradesh</option>
-                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Manipur">Manipur</option>
-                <option value="Meghalaya">Meghalaya</option>
-                <option value="Mizoram">Mizoram</option>
-                <option value="Nagaland">Nagaland</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Sikkim">Sikkim</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Tripura">Tripura</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Uttarakhand">Uttarakhand</option>
-                <option value="West Bengal">West Bengal</option>
-                <option value="Other">Other</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="age">Age</label>
-                <select name="age" id="age" class="form-control" Required>
-                  <option value="All">None</option>
-                  <option value="Twenty">Less than 20</option>
-                  <option value="Thirty">Between 21 to 40</option>
-                  <option value="Fourty">Between 41 to 60</option>
-                  <option value="Sixty">Above 61</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                <label for="gender">Gender</label>
-                <select name="gender" id="gender" class="form-control" Required>
-                  <option value="All">None</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  </select>
-              </div>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
 
-                
-                    <h5>Previous Reviews</h5>
-                    {% if loc == None %}
-                    {% if gen == None %}
-  <!-- age filter -->
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
+    <div class="container">
+        <hr>
+        <div class="row">
+            <div class="col-md-6" style="border-right: 2px solid #cfcfcf">
+                {% if session['logged_in'] %}
+                <form action="/postreview/{{product_id}}" method="post">
+                    <div class="form-group">
+                        <label for="uname">
+                            <h5>Hi {{ username }} !! </h5>
+                        </label>
+                        <hr>
+                        <label for="reviewbox">
+                            <h5> Write a Review</h5>
+                        </label>
+                        <textarea type="text" class="form-control" id="reviewbox" aria-describedby="reviewlHelp"
+                            placeholder="Write a Review" style="min-height:100px" name="reviewbox" required></textarea>
+                        <small id="reviewHelp" class="form-text text-muted">Tell us how you feel about the
+                            product.</small>
                     </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <button type="submit" class="btn btn-primary"> Submit </button>
+                </form>
+                {% else %}
+                <p>Please log in to write a review</p>
+                {% endif %}
+                <hr>
+                <p>The product rating is generated based on the review you provide</p>
+            </div>
 
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
+            <div class="col-md-6" id="review">
+                <div class="col-md-3" id="review">
+                    <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#filter">
+                        Filter
+                    </button>
 
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['age'] == ag %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-                    
-                    {% endif %}
-  <!-- ag filter end -->
-
-                    {% elif gen == "All" %}
-  <!-- ag start -->
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['age'] == ag %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-  <!-- age end -->
-
-                    {% else %}
-
-  <!-- gender/ag on  -->
-
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['age'] == ag %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-                    {% endif %}
-  <!-- gender/ag end  location none end-->
-                    
-
-           
-
-                    {% elif loc == "All" %}
-                    {% if gen == None %}
-  <!-- age filter -->
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['age'] == ag %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-
-  <!-- ag filter end -->
-
-                    {% elif gen == "All" %}
-  <!-- ag start -->
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['age'] == ag %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-  <!-- age end -->
-
-                    {% else %}
-
-  <!-- gender/ag on  -->
-
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['age'] == ag %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-                    {% endif %}
-
-  <!-- gender/ag end  location all end-->
-
-                    {% else %}
-
-
-                    {% if gen == None %}
-  <!-- age filter -->
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    {% if account['age'] == ag %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-  <!-- ag filter end -->
-
-                    {% elif gen == "All" %}
-  <!-- ag start -->
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    {% if account['age'] == ag %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-  <!-- age end -->
-
-                    {% else %}
-
-  <!-- gender/ag on  -->
-
-                    {% if ag == None %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['locality'] == loc %}
-                    {% if account['username'] == item[1] %}
-                    {% if gen== account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% elif ag == "All" %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['locality'] == loc %}
-                    {% if account['username'] == item[1] %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% else %}
-                    {% for item in data %}
-                    {% for account in allaccounts %}
-                    {% if account['username'] == item[1] %}
-                    {% if account['locality'] == loc %}
-                    {% if account['age'] == ag %}
-                    {% if gen == account['gender'] %}
-                    <div class="card bg-light mycard">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
-                                <span class="badge badge-success">{{ item[3] }}</span>
-                            </h5>
-                            <p class="card-text"> {{ item[2] }}</p>
-                            <span class="badge badge-danger">{{ item[4] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
-                    {% endif %}
-
-                    {% endif %}
-
-  <!-- gender/ag end  location else end-->
-
-                    
-
-                    {% endif %}
                 </div>
+
+
+                <!-- filter-Modal -->
+                <div class="modal fade" id="filter" tabindex="-1" role="dialog" aria-labelledby="filterLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="filterLabel">Where are u from?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/filter/{{product_id}}" method="post">
+                                    <div class="form-group">
+                                        <label for="locality">Which location</label>
+                                        <select name="locality" id="locality" class="form-control" Required>
+                                            <option value="All">None</option>
+                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands
+                                            </option>
+                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                            <option value="Assam">Assam</option>
+                                            <option value="Bihar">Bihar</option>
+                                            <option value="Chandigarh">Chandigarh</option>
+                                            <option value="Chhattisgarh">Chhattisgarh</option>
+                                            <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+                                            <option value="Daman and Diu">Daman and Diu</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Lakshadweep">Lakshadweep</option>
+                                            <option value="Puducherry">Puducherry</option>
+                                            <option value="Goa">Goa</option>
+                                            <option value="Gujarat">Gujarat</option>
+                                            <option value="Haryana">Haryana</option>
+                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                            <option value="Jharkhand">Jharkhand</option>
+                                            <option value="Karnataka">Karnataka</option>
+                                            <option value="Kerala">Kerala</option>
+                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                            <option value="Maharashtra">Maharashtra</option>
+                                            <option value="Manipur">Manipur</option>
+                                            <option value="Meghalaya">Meghalaya</option>
+                                            <option value="Mizoram">Mizoram</option>
+                                            <option value="Nagaland">Nagaland</option>
+                                            <option value="Odisha">Odisha</option>
+                                            <option value="Punjab">Punjab</option>
+                                            <option value="Rajasthan">Rajasthan</option>
+                                            <option value="Sikkim">Sikkim</option>
+                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                            <option value="Telangana">Telangana</option>
+                                            <option value="Tripura">Tripura</option>
+                                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                            <option value="Uttarakhand">Uttarakhand</option>
+                                            <option value="West Bengal">West Bengal</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="age">Age</label>
+                                        <select name="age" id="age" class="form-control" Required>
+                                            <option value="All">None</option>
+                                            <option value="Twenty">Less than 20</option>
+                                            <option value="Thirty">Between 21 to 40</option>
+                                            <option value="Fourty">Between 41 to 60</option>
+                                            <option value="Sixty">Above 61</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gender">Gender</label>
+                                        <select name="gender" id="gender" class="form-control" Required>
+                                            <option value="All">None</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Filter</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h5>Previous Reviews</h5>
+                {% if loc == None %}
+                {% if gen == None %}
+                <!-- age filter -->
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['age'] == ag %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                <!-- ag filter end -->
+
+                {% elif gen == "All" %}
+                <!-- ag start -->
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['age'] == ag %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                <!-- age end -->
+
+                {% else %}
+
+                <!-- gender/ag on  -->
+
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['age'] == ag %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                {% endif %}
+                <!-- gender/ag end  location none end-->
+
+
+
+
+                {% elif loc == "All" %}
+                {% if gen == None %}
+                <!-- age filter -->
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['age'] == ag %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+
+                <!-- ag filter end -->
+
+                {% elif gen == "All" %}
+                <!-- ag start -->
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['age'] == ag %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                <!-- age end -->
+
+                {% else %}
+
+                <!-- gender/ag on  -->
+
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['age'] == ag %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                {% endif %}
+
+                <!-- gender/ag end  location all end-->
+
+                {% else %}
+
+
+                {% if gen == None %}
+                <!-- age filter -->
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                {% if account['age'] == ag %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                <!-- ag filter end -->
+
+                {% elif gen == "All" %}
+                <!-- ag start -->
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                {% if account['age'] == ag %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+                <!-- age end -->
+
+                {% else %}
+
+                <!-- gender/ag on  -->
+
+                {% if ag == None %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['locality'] == loc %}
+                {% if account['username'] == item[1] %}
+                {% if gen== account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% elif ag == "All" %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['locality'] == loc %}
+                {% if account['username'] == item[1] %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% else %}
+                {% for item in data %}
+                {% for account in allaccounts %}
+                {% if account['username'] == item[1] %}
+                {% if account['locality'] == loc %}
+                {% if account['age'] == ag %}
+                {% if gen == account['gender'] %}
+                <div class="card bg-light mycard">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item[1] }} &nbsp; &nbsp;
+                            <span class="badge badge-success">{{ item[3] }}</span>
+                        </h5>
+                        <p class="card-text"> {{ item[2] }}</p>
+                        <span class="badge badge-danger">{{ item[4] }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+
+                {% endif %}
+
+                <!-- gender/ag end  location else end-->
+
+
+
+                {% endif %}
             </div>
         </div>
-    </section>
-    {% endblock body %}
-
-
-
+    </div>
+</section>
+{% endblock body %}
